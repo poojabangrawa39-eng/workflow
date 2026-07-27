@@ -1,0 +1,8 @@
+streamlit
+python-dotenv
+groq
+gTTS
+moviepy==1.0.3
+Pillow
+numpy==1.26.4
+imageio-ffmpeg
