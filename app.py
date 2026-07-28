@@ -48,15 +48,28 @@ load_dotenv()
 # BASIC HELPERS
 # =========================================================
 def get_groq_api_key() -> str:
+    # Try Streamlit Secrets first (for deployed app)
+    try:
+        key = st.secrets["GROQ_API_KEY"]
+        if key:
+            return str(key).strip()
+    except Exception:
+        pass
+
+    # Fall back to local .env (for local development)
+    load_dotenv()
     key = os.getenv("GROQ_API_KEY", "").strip()
+
     if key:
         return key
 
-    try:
-        return str(st.secrets.get("GROQ_API_KEY", "")).strip()
-    except Exception:
-        return ""
-
+    st.error(
+        "❌ GROQ_API_KEY not found.\n\n"
+        "• Local: Add it to your .env file.\n"
+        "• Streamlit Cloud: Add it in App Settings → Secrets."
+    )
+    st.stop()
+    
 
 def clean_area_name(name: str) -> str:
     value = str(name).strip().lower()
@@ -1104,7 +1117,7 @@ if st.button(
                 sequence_text,
                 len(ordered_photos),
             )
-            client = Groq(api_key=api_key)
+            client = Groq(api_key=get_groq_api_key())
 
             with st.spinner(
                 "Creating one matching voice script line for every photo..."
