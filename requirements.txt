@@ -1,10 +1,11 @@
-streamlit==1.48.0
+streamlit
 python-dotenv
 groq
 gTTS
-moviepy==2.2.1
-numpy
+moviepy==1.0.3
 Pillow
+numpy==1.26.4
 imageio
 imageio-ffmpeg
 mutagen
+decorator<5
